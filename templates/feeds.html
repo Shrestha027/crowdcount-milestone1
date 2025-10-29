@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feeds | Crowd Count</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="sidebar">
+    <h2>CrowdCount</h2>
+    <ul>
+        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('users') }}">Users</a></li>
+        <li><a href="{{ url_for('feeds') }}">Feeds</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</div>
+
+<div class="main">
+    <h2>Feeds List</h2>
+    <a class="add-btn" href="{{ url_for('add_feed') }}">+ Add Feed</a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Video Filename</th>
+            <th>Assigned User</th>
+            <th>Action</th>
+        </tr>
+        {% for feed in feeds %}
+        <tr>
+            <td>{{ feed.id }}</td>
+            <td>{{ feed.name }}</td>
+            <td>{{ feed.type }}</td>
+            <td>
+                {% if feed.video_filename %}
+                    <a href="{{ url_for('static', filename='uploads/' + feed.video_filename) }}" target="_blank">View</a>
+                {% else %}
+                    No file
+                {% endif %}
+            </td>
+            <td>{{ feed.assigned_user }}</td>
+            <td><a href="{{ url_for('edit_feed', id=feed.id) }}">Edit</a> |
+                    <a href="{{ url_for('delete_feed', id=feed.id) }}" onclick="return confirm('Delete this feed?')">Delete</a>
+                </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
